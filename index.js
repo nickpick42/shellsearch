@@ -2,7 +2,7 @@ const {exec} = require("child_process")
 const S = require("string")
 const terminate = require("terminate/promise")
 
-const main = async (command, searchingText, returnText, destroyOnFound)=>{
+const index = async (command, searchingText, returnText, destroyOnFound, returnPID)=>{
    return  new Promise( (res,rej)=>{
        let execute = exec(command)
        let found = false;
@@ -16,7 +16,7 @@ const main = async (command, searchingText, returnText, destroyOnFound)=>{
 
                     }
                 }
-                res(returnText ? data : true)
+                res(returnText ? {data,pid:execute.pid} : true)
 
             }
         })
@@ -30,14 +30,14 @@ const main = async (command, searchingText, returnText, destroyOnFound)=>{
 
                     }
                 }
-                res(returnText ? data : true)
+                res(returnText ? {data,pid:execute.pid} : true)
 
             }
         })
        execute.on("close",(data)=>{
            if ( !found){
                if ( S(data).contains(searchingText)){
-                   res(returnText ? data : true)
+                   res(returnText ? {data,pid:execute.pid} : true)
                }else{
                    res(false)
                }
@@ -46,4 +46,4 @@ const main = async (command, searchingText, returnText, destroyOnFound)=>{
 
     })
 }
-module.exports = main
+module.exports = index
