@@ -2,11 +2,14 @@ const {exec} = require("child_process")
 const S = require("string")
 const terminate = require("terminate/promise")
 
-const index = async (command, searchingText, returnText, destroyOnFound, returnPID)=>{
+const index = async (command, searchingText, returnText, destroyOnFound, verbose)=>{
    return  new Promise( (res,rej)=>{
        let execute = exec(command)
        let found = false;
         execute.stdout.on("data",async (data)=>{
+            if ( verbose){
+                console.log(data)
+            }
             if ( S(data).contains(searchingText)){
                 found = true
                 if ( destroyOnFound){
@@ -21,6 +24,9 @@ const index = async (command, searchingText, returnText, destroyOnFound, returnP
             }
         })
         execute.stderr.on("data",async (data)=>{
+            if ( verbose){
+                console.log(data)
+            }
             if ( S(data).contains(searchingText)){
                 found  = true
                 if ( destroyOnFound){
@@ -35,6 +41,9 @@ const index = async (command, searchingText, returnText, destroyOnFound, returnP
             }
         })
        execute.on("close",(data)=>{
+           if ( verbose){
+               console.log(data)
+           }
            if ( !found){
                if ( S(data).contains(searchingText)){
                    res(returnText ? {data,pid:execute.pid} : true)

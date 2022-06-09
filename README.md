@@ -18,9 +18,14 @@ const shellSearch = require("../index")
 
 let main = async ()=>{
    /*
-    await shellSearch("COMMAND TO EXECUTE","TEXT TO SEARCH FOR","RETURN LINE TEXT WAS FOUND (true or false)","KILL PROCESS ONCE FOUND")
-     */
-    let response = await shellSearch("ping google.com","Reply",true,true)
+    await shellSearch(
+    "COMMAND TO EXECUTE",
+    "TEXT TO SEARCH FOR",
+    "RETURN LINE TEXT WAS FOUND (true or false)",
+    "KILL PROCESS ONCE FOUND(true or false)",
+    "PRINT EVERY LINE (TRUE OR FALSE)"
+    )*/
+    let response = await shellSearch("ping google.com","Reply",true,true,true)
     console.log(response)
     /*
         PID return along with text if third parameter is set to true
